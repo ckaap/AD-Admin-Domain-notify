@@ -1,7 +1,9 @@
-﻿# Итерация по каждому контроллеру домена
+# Получение списка контроллеров домена
+$domainControllers = Get-ADDomainController -Filter *
+# Итерация по каждому контроллеру домена
 foreach ($dc in $domainControllers) {
     # Выполнение команды на удаленном компьютере с помощью Invoke-Command
-    Invoke-Command -ComputerName $dc -ScriptBlock {
+    Invoke-Command -ComputerName $dc.Name -ScriptBlock {
         # Передача параметра в скриптблок
         param($username)
         # Получение времени 24 часа назад
