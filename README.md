@@ -5,4 +5,5 @@
 
 ## Необходимо для DC включить расширенную политику аудита событий  
 Computer Configuration -> Windows Settings -> Security Settings -> Advanced Audit Configuration -> Account Management -> Audit Security Group Management.  
-При добавлении пользователя в группу Active Directory в журнале Security появляется событие EventId 4728
+При добавлении пользователя в группу Active Directory в журнале Security появляется событие EventId 4728  
+## https://winitpro.ru/index.php/2018/04/18/opoveshhenie-pri-dobavlenii-polzovatelya-v-gruppu-active-directory/
