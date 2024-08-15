@@ -7,7 +7,7 @@ foreach ($dc in $domainControllers) {
         # Передача параметра в скриптблок
         param($username)
         # Получение времени 24 часа назад
-        $time = (Get-Date) - (New-TimeSpan -Hour 24)
+        $time = (Get-Date) - (New-TimeSpan -Minutes 15)
         # Получение всех событий из журнала безопасности с ID 4728, произошедших в течение последних 24 часов
         Get-WinEvent -FilterHashtable @{LogName="Security";ID=4728;StartTime=$Time}| Foreach {
             # Сохранение текущего события в переменной
@@ -31,14 +31,15 @@ foreach ($dc in $domainControllers) {
                 # Получение имени измененной группы
                 $group = $xml.Event.EventData.Data | Where-Object { $_.Name -eq "TargetUserName" } | Select-Object -First 1 -ExpandProperty "#text"
                     # Если измененная группа - Администраторы домена, то отправить уведомление по электронной почте
-                    if ($group -eq "Администраторы домена") 
+                    if ($group -eq "Администраторы") 
                        {
                         $smtpServer = "mail.npo-pkrv.ru"
-                        $to = "p.kuryshin@npo-pkrv.ru"
-                        $from = "p.kuryshin@npo-pkrv.ru"
+                        $from = "pkrv_alert@npo-pkrv.ru"
+                        $to = "oit@npo-pkrv.ru"
                         $subject = "Уведомление об изменении группы безопасности"
+                        $cred = Import-Clixml -Path "C:\Credentials.xml"
                         $body = "В группу Администраторы домена добавлен пользователь $username"
-                        Send-MailMessage -SmtpServer $smtpServer -To $to -From $from -Subject $subject -Body $body -Encoding 'UTF8' -Priority High
+                        Send-MailMessage -SmtpServer $smtpServer -To $to -From $from -Subject $subject -Body $body -Encoding 'UTF8' -Priority High -Port 587 -Credential $cred -UseSsl
                        }
                 $output = "$env:COMPUTERNAME | $time | $type член группы безопасности. | Изменил: $adminUser | Имя учетной записи: $username | Группа: $group"
                 Write-Output $output
