@@ -36,7 +36,7 @@ foreach ($dc in $domainControllers) {
                        $smtpServer = "example.com"
                         $from = "alert@example.com"
                         $to = "it@example.com"
-                        $subject = "GPO_LOGON_DENY"
+                        $subject = "Добавлен новый администратор домена!!!"
                         $body = ""
                         $secpasswd = ConvertTo-SecureString "!!password!!" -AsPlainText -Force
                         $cred = New-Object System.Management.Automation.PSCredential ("example\alert", $secpasswd)
