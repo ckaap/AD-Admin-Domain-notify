@@ -33,11 +33,13 @@ foreach ($dc in $domainControllers) {
                     # Если измененная группа - Администраторы домена, то отправить уведомление по электронной почте
                     if ($group -eq "Администраторы") 
                        {
-                        $smtpServer = "mail.npo-pkrv.ru"
-                        $from = "pkrv_alert@npo-pkrv.ru"
-                        $to = "oit@npo-pkrv.ru"
-                        $subject = "Уведомление об изменении группы безопасности"
-                        $cred = Import-Clixml -Path "C:\Credentials.xml"
+                       $smtpServer = "example.com"
+                        $from = "alert@example.com"
+                        $to = "it@example.com"
+                        $subject = "GPO_LOGON_DENY"
+                        $body = ""
+                        $secpasswd = ConvertTo-SecureString "!!password!!" -AsPlainText -Force
+                        $cred = New-Object System.Management.Automation.PSCredential ("example\alert", $secpasswd)
                         $body = "В группу Администраторы домена добавлен пользователь $username"
                         Send-MailMessage -SmtpServer $smtpServer -To $to -From $from -Subject $subject -Body $body -Encoding 'UTF8' -Priority High -Port 587 -Credential $cred -UseSsl
                        }
